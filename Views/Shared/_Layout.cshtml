@@ -10,13 +10,13 @@
     <title>Male-Fashion | Template</title>
 
     <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
-          rel="stylesheet">
-
+    @*<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+          rel="stylesheet">*@
+    <link rel="stylesheet" href="~/Asset/font-awesome-4.7.0/css/font-awesome.min.css">
     <!-- Css Styles -->
     <link rel="stylesheet" href="~/Content/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="~/Content/css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="~/Content/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="~/Content/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/Content/css/elegant-icons.css">
     <link rel="stylesheet" href="~/Content/css/magnific-popup.css" type="text/css">
     <link rel="stylesheet" href="~/Content/css/nice-select.css" type="text/css">
     <link rel="stylesheet" href="~/Content/css/owl.carousel.min.css" type="text/css">
@@ -25,7 +25,10 @@
 </head>
 
 <body>
-    <!-- Page Preloder -->
+    <div style="position:relative;">
+        <div id="get_blur">
+        </div>
+        <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
     </div>
@@ -39,7 +42,7 @@
                 <a href="#">FAQs</a>
             </div>
             <div class="offcanvas__top__hover">
-                <span>Usd <i class="arrow_carrot-down"></i></span>
+                <span>USD <i class="fa fa-arrow-down" aria-hidden="true"></i></span>
                 <ul>
                     <li>USD</li>
                     <li>EUR</li>
@@ -50,7 +53,7 @@
         <div class="offcanvas__nav__option">
             <a href="#" class="search-switch"><img src="~/Content/img/icon/search.png" alt=""></a>
             <a href="#"><img src="~/Content/img/icon/heart.png" alt=""></a>
-            <a href="#"><img src="~/Content/img/icon/cart.png" alt=""> <span>0</span></a>
+            <a href=""><img src="~/Content/img/icon/cart.png" alt=""> <span class="conut-number"></span></a>
             <div class="price">$0.00</div>
         </div>
         <div id="mobile-menu-wrap"></div>
@@ -72,7 +75,7 @@
                     <div class="col-lg-6 col-md-5">
                         <div class="header__top__right">
                             <div class="header__top__links">
-                                @if (@User.Identity.Name == "")
+                                @*@if (@User.Identity.Name == "")
                                 {
                                     <a href="@Url.Action("Index", "Login")">Sign in</a>
                                 }
@@ -80,11 +83,12 @@
                                 {
                                     <a href="">Hello: @User.Identity.Name</a>
                                     <span style=" margin-right: 28px">@Html.ActionLink("Đăng Xuất", "Logout", "Login")</span>
-                                }
+                                }*@
+                                <a href="@Url.Action("Index", "Login")">Sign in</a>
                                 <a href="#">FAQs</a>
                             </div>
                             <div class="header__top__hover">
-                                <span>Usd <i class="arrow_carrot-down"></i></span>
+                                <span>Usd <i class="fa fa-arrow-down"></i></span>
                                 <ul>
                                     <li>USD</li>
                                     <li>EUR</li>
@@ -127,7 +131,7 @@
                     <div class="header__nav__option">
                         <a href="#" class="search-switch"><img src="~/Content/img/icon/search.png" alt=""></a>
                         <a href="#"><img src="~/Content/img/icon/heart.png" alt=""></a>
-                        <a href="#"><img src="~/Content/img/icon/cart.png" alt=""> <span>0</span></a>
+                        <a class="cart_icon" href="#"><img src="~/Content/img/icon/cart.png" alt=""> <span class="conut-number"></span></a>
                         <div class="price">$0.00</div>
                     </div>
                 </div>
@@ -135,9 +139,32 @@
             <div class="canvas__open"><i class="fa fa-bars"></i></div>
         </div>
     </header>
+    
     <!-- Header Section End -->
     <!-- THIS THING -->
-    @RenderBody()
+    <div class="all_render">
+        <div class="mini_cart" id="mini_cart_id">
+            <span class="triangle-up"></span>
+            <h5 class="cart-sub-title">
+                Recently added products
+                <span id="cart_icon_close">
+                    X
+                </span>
+            </h5>
+            <div class="cart-sub">
+
+            </div>
+            <div class="cart-sub">
+
+            </div>
+            <div class="cart-sub-total">
+                <button class="cart-sub-button"> Checkout </button>
+                <button class="cart-sub-button"> Cart </button>
+            </div>
+        </div>
+        @RenderBody()
+
+    </div>
     <!-- THIS THING -->
     <!-- Footer Section Begin -->
     <footer class="footer">
@@ -215,6 +242,7 @@
             </form>
         </div>
     </div>
+    </div>
     <!-- Search End -->
     <!-- Js Plugins -->
     <script src="~/Content/js/jquery-3.3.1.min.js"></script>
@@ -227,9 +255,10 @@
     <script src="~/Content/js/mixitup.min.js"></script>
     <script src="~/Content/js/owl.carousel.min.js"></script>
     <script src="~/Content/js/main.js"></script>
-
+    <script src="~/Content/js/"></script>
     <script src="/scripts/jquery.validate.min.js" type="text/javascript"></script>
     <script src="/scripts/jquery.validate.unobtrusive.min.js" type="text/javascript"></script>
+    <script src="~/Content/js/CartControler.js"></script>
     @RenderSection("jsFooter", required: false)
 </body>
 </html>

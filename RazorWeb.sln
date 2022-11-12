@@ -5,7 +5,9 @@ VisualStudioVersion = 17.2.32519.379
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RazorWeb", "RazorWeb.csproj", "{D58BA890-DC40-4289-958E-FF498E31B1AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "..\Data\Data.csproj", "{DF2576AB-90E5-4BE7-AAD2-2799C4B73202}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "..\Data\Data.csproj", "{DF2576AB-90E5-4BE7-AAD2-2799C4B73202}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminWeb", "..\AdminWeb\AdminWeb.csproj", "{D071151E-E710-4F3A-A6A5-23AF574E45C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{DF2576AB-90E5-4BE7-AAD2-2799C4B73202}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF2576AB-90E5-4BE7-AAD2-2799C4B73202}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF2576AB-90E5-4BE7-AAD2-2799C4B73202}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D071151E-E710-4F3A-A6A5-23AF574E45C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D071151E-E710-4F3A-A6A5-23AF574E45C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D071151E-E710-4F3A-A6A5-23AF574E45C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D071151E-E710-4F3A-A6A5-23AF574E45C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

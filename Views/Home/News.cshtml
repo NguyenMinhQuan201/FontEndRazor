@@ -14,7 +14,7 @@
             @foreach(var item in Model){
                 <div class="col-lg-4 col-md-6 col-sm-6">
                     <div class="blog__item">
-                        <div class="blog__item__pic set-bg" data-setbg="/Content/img/@Html.DisplayFor(moldelItem => item.Image)"></div>
+                        <div class="blog__item__pic set-bg" style="background-image: url('/Content/img/@Html.DisplayFor(moldelItem => item.Image)')"></div>
                         <div class="blog__item__text">
                             <span><img src="img/icon/calendar.png" alt="">@Html.DisplayFor(moldelItem => item.CreatedDate)</span>
                             <h5>@Html.DisplayFor(moldelItem => item.TieuDe)</h5>
@@ -47,4 +47,5 @@
         </div>
     </div>
 </section>
+
 

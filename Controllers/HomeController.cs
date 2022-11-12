@@ -1,5 +1,6 @@
 ﻿using Data.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RazorWeb.Models;
 using System.Diagnostics;
 
@@ -11,15 +12,15 @@ namespace RazorWeb.Controllers
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IConfiguration _configuration;
         private readonly Lipstick2Context _db;
-        public HomeController(Lipstick2Context db)
+        public HomeController(Lipstick2Context db )
         {
             _db = db;
         }
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
             return View();
         }
-        public ActionResult ProductsHot(/*int? page*/)
+        public async Task<ActionResult> ProductsHot(/*int? page*/)
         {
             /*if (page == null) page = 1;
             int pageSize = 4;
@@ -27,13 +28,13 @@ namespace RazorWeb.Controllers
 
             /*var find = db.SanPhams.Where(x => x.Mota == M).FirstOrDefault();
             var lst = db.SanPhams.Where(x => x.Mota == find.Mota).ToList();*/
-            var lst = _db.SanPhams.ToList();
-            return PartialView(lst);
+            var lst = await _db.SanPhams.ToListAsync();
+            return PartialView("ProductsHot",lst);
         }
-        public ActionResult News(/*int? page*/)
+        public async Task<ActionResult> News()
         {
-            var lst = _db.TinTucs.OrderByDescending(x => x.CreatedDate).Take(3).ToList();
-            return PartialView(lst);
+            var lst = await _db.TinTucs.OrderByDescending(x => x.CreatedDate).Take(3).ToListAsync();
+            return PartialView("News",lst);
         }
         public ActionResult About()
         {

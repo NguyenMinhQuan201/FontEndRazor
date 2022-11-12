@@ -1,0 +1,142 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section jsFooter{
+    <script src="~/Content/js/CartControler.js"></script>
+}
+<head>
+    <link rel="stylesheet" type="text/css" href="~/Content/css/Your-cart.css">
+</head>
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>Shopping Cart</h4>
+                    <div class="breadcrumb__links">
+                        <a href="./index.html">Home</a>
+                        <a href="./shop.html">Shop</a>
+                        <span>Shopping Cart</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+<!-- Shopping Cart Section Begin -->
+<section class="shopping-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="shopping__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="js__cart-content">
+                           
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="continue__btn">
+                            <a href="#">Continue Shopping</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="continue__btn update__btn">
+                            <a href="#"><i class="fa fa-spinner"></i> Update cart</a>
+                            @*<h4  style="float:left" class="total-checkout"><i class="fa fa-spinner"></i></h4>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="cart__discount">
+                    <h6>Discount codes</h6>
+                    <form action="#">
+                        <input type="text" placeholder="Coupon code">
+                        <button type="submit">Apply</button>
+                    </form>
+                </div>
+                <div class="cart__total">
+                    <h6>Cart total</h6>
+                    <ul>
+                        <li>Subtotal <span class="total-checkout"></span> <span>$</span></li>
+                        <li>Total  <span class="total-checkout"></span> <span>$</span></li>
+                    </ul>
+                    <button id="checkout" class="primary-btn">Proceed to checkout</button>
+                </div>               
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Shopping Cart Section End -->
+<!--<head>
+    <link rel="stylesheet" type="text/css" href="~/Content/css/Your-cart.css">
+</head>
+<body>
+    <div class="body_main">
+        <div class="content">
+            <div class="tieu-de">
+                <br>
+                <p>Your Cart</p>
+            </div>
+            <div class="main">
+                <table style="width: 100%;border-bottom: 1px solid black">
+                    <thead>
+                        <tr style="border: 1px solid red;">
+                            <th style="width: 50%;height: 80px;">PRODUCT</th>
+                            <th style="width: 20%;height: 80px;">PRICE</th>
+                            <th style="width: 20%;height: 80px;">QUANTITY</th>
+                            <th style="width: 10%;height: 80px;">TOTAL</th>
+                        </tr>
+                    </thead>
+                    <tbody class="js__cart-content">
+                    </tbody>
+
+                </table>
+                <div class="main2">
+                    <div class="main2-1">
+                        <h3>Add a note to your order</h3>
+                        <input style="height: 50px;width: 400px;border-radius: 10px; border:1px solid black" type="text" name="">
+                    </div>
+                    <div class="main2-1">
+                        <div style="flex-direction:row;margin-left:50%">
+                            <h4 style="float:left">Total : </h4>
+                            <h4 style="float:left" class="total-checkout">---------------</h4>
+                            <h4 style="float:left">€</h4>
+                        </div>
+                        <br />
+                        <h4>
+                            Payments Secured by Authipay by AIBMS
+                            VAT included. Shipping calculated at checkout.
+                        </h4>
+
+
+                        <button style="background-color: #F5CFD1;height: 50px;width: 100px; margin-left: 60%; margin-top: 5%; border-radius: 5px;"-->
+@*data-id="@User.Identity.Name"*@
+<!--class="checkout" type="submit">
+    CHECK OUT
+</button>
+<button style="background-color: #F5CFD1;height: 50px;width: 100px; margin-left: 60%; margin-top:1px; border-radius: 5px;"-->
+@*data-id="@User.Identity.Name"*@
+<!--class="make-order" type="submit">
+                            Make Order
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>-->

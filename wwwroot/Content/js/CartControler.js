@@ -36,13 +36,15 @@ class CartController {
                 success: function (response) {
                     if (response.status == true) {
                         var rows = "<span>Color:</span>";
-                        for (var i = 0; i < response.Arr.length; i++){
-                            console.log(response.Arr[i].ID);
-                            console.log(response.Arr[i].MauSacSP);
+                        console.log("ok")
+                        console.log(response.arr)
+                        for (var i = 0; i < response.arr.length; i++){
+                            console.log(response.arr[i].id);
+                            console.log(response.arr[i].mauSacSp);
                             rows += `
-                                                <label for="${response.Arr[i].MauSacSP}" class="colour" data-id="${response.Arr[i].ID}"">
-                                                    ${response.Arr[i].MauSacSP}
-                                                    <input name="mau" type="radio" id="${response.Arr[i].ID}">
+                                                <label for="${response.arr[i].mauSacSp}" class="colour" data-id="${response.arr[i].id}"">
+                                                    ${response.arr[i].mauSacSp}
+                                                    <input name="mau" type="radio" id="${response.arr[i].id}">
                                                 </label>
                                         
                                     `
@@ -140,11 +142,12 @@ class CartController {
             })
         });
         $('.change-price').on('change', function () {
+            console.log("ok")
             var click = $(this);
             var Quanity= click.val();
             var Id = click.data('id');
             $.ajax({
-                url: "/Carts/changePrice",
+                url: "/Carts/ChangePrice",
                 data: { id: Id, sl: Quanity },
                 dataType: "json",
                 type: "POST",
@@ -156,7 +159,7 @@ class CartController {
                                 if (Id == Carts[i].Prime) {
                                     Carts[i].SoLuong = Number(Quanity);
                                     Carts[i].Tong = Carts[i].SoLuong * Carts[i].Gia
-                                    $(`#total-price-${Id}`).html(Carts[i].Tong);
+                                    $(`#total-price-${Id}`).html("$"+Carts[i].Tong);
                                     localStorage.setItem('Carts', JSON.stringify(Carts));
                                 }
                             }
@@ -240,8 +243,8 @@ class CartController {
                             let b = String(1);
                             if (Carts.length > 0) {
                                 for (var i = 0; i < Carts.length; i++) {
-                                    if (Carts[i].Prime == response.Prime) {
-                                        if (Carts[i].SoLuong < response.SoLuong) {
+                                    if (Carts[i].Prime == response.prime) {
+                                        if (Carts[i].SoLuong < response.soLuong) {
                                             Carts[i].SoLuong = Carts[i].SoLuong + 1;
                                             Carts[i].Tong = Carts[i].Tong + Carts[i].Gia;
                                         }
@@ -250,28 +253,28 @@ class CartController {
                                 }
                                 if (a == 0) {
                                     Carts.push({
-                                        Prime: response.Prime,
+                                        Prime: response.prime,
                                         SoLuong: 1,
-                                        Img: response.Img,
-                                        Gia: response.Gia,
-                                        Name: response.Ten,
-                                        Mau: response.Mau,
-                                        Kich: response.Kich,
-                                        Tong: 0 + response.Gia,
+                                        Img: response.img,
+                                        Gia: response.gia,
+                                        Name: response.ten,
+                                        Mau: response.mau,
+                                        Kich: response.kich,
+                                        Tong: 0 + response.gia,
                                         TrangThai:true,
                                     });
                                 }
                             }
                             else {
                                 Carts.push({
-                                    Prime: response.Prime,
+                                    Prime: response.prime,
                                     SoLuong: 1,
-                                    Img: response.Img,
-                                    Gia: response.Gia,
-                                    Name: response.Ten,
-                                    Mau: response.Mau,
-                                    Kich: response.Kich,
-                                    Tong: 0 + response.Gia,
+                                    Img: response.img,
+                                    Gia: response.gia,
+                                    Name: response.ten,
+                                    Mau: response.mau,
+                                    Kich: response.kich,
+                                    Tong: 0 + response.gia,
                                     TrangThai: true,
                                 });
                             }
@@ -321,18 +324,16 @@ class CartController {
                     phone: Phone,
                     email: Email,
                 });
+                console.log(JSON.stringify(Carts))
                 localStorage.setItem('Order', JSON.stringify(Order));
                 $.ajax({
-                    url: "/Carts/PaymentWithPaypal",
-                    data: { cartTemp: JSON.stringify(Carts), addRess: AddRess, phone: Phone},
+                    url: "/Order/PaymentWithPaypal",
+                    data: { cartUser: JSON.stringify(Carts), addRess: AddRess, phone: Phone},
                     dataType: "json",
                     type: "POST",
                     success: function (response) {
-                        if (response.status == true && response.url=="") {
-                            window.location.href = "/Home/Index";
-                        }
                         if (response.status == true ) {
-                            var link = response.url;
+                            var link = response.link;
                             
                             /*alert("XONG!");*/
                             /*window.location.href = "";*/
@@ -442,30 +443,30 @@ class CartController {
                                 for (var i = 0; i < carts.length; i++) {
 
                                     var cart = carts[i];
-                                    tongtien = tongtien + cart.Tong;
+                                    tongtien = tongtien + cart.tong;
                                     rows += `<tr>
                                 <td class="product__cart__item">
                                     <div class="product__cart__item__pic">
-                                        <img src="/Content/img/${cart.Img}" alt="">
+                                        <img src="/Content/img/${cart.img}" alt="">
                                     </div>
                                     <div class="product__cart__item__text">
-                                        <h6>${cart.Name}</h6>
-                                        <h5>€${cart.Gia}</h5>
-                                        Size: ${cart.Kich}
+                                        <h6>${cart.name}</h6>
+                                        <h5>€${cart.gia}</h5>
+                                        Size: ${cart.kich}
                                          <br>
-                                        Color: ${cart.Mau}
+                                        Color: ${cart.mau}
                                         <br>
                                     </div>
                                 </td>
                                 <td class="quantity__item">
                                     <div class="quantity">
                                         <div class="pro-qty-2">
-                                            <input class="change-price" data-id="${cart.Prime}" value="${cart.SoLuong}" type="number" min="1" max="10">
+                                            <input class="change-price" data-id="${cart.prime}" value="${cart.soLuong}" type="number" min="1" max="10">
                                         </div>
                                     </div>
                                 </td>
-                                <td class="cart__price" id="total-price-${cart.Prime}">$ ${cart.Tong}</td>
-                                <td class="cart__close" data-id="${cart.Prime}"><i class="fa fa-close"></i></td>
+                                <td class="cart__price" id="total-price-${cart.prime}">$ ${cart.tong}</td>
+                                <td class="cart__close" data-id="${cart.prime}"><i class="fa fa-close"></i></td>
                             </tr>
                                         `
                                 }
@@ -495,7 +496,7 @@ class CartController {
                     var cart = carts[i];
                     if (cart.TrangThai == true) {
                         rows += `
-                        <li>${cart.SoLuong} - ${cart.Name} <span>$ ${cart.Gia}</span></li>
+                        <li>${cart.soLuong} - ${cart.name} <span>$ ${cart.gia}</span></li>
                     `
                     }
                 }
@@ -571,57 +572,57 @@ class CartController {
                         <tr>
                                 <td class="product__cart__item">
                                     <div class="product__cart__item__pic">
-                                        <img style="height: 110px;width: 90px; " src="/Content/img/${cart.Img}" alt="">
+                                        <img style="height: 110px;width: 90px; " src="/Content/img/${cart.img}" alt="">
                                     </div>
                                     <div class="product__cart__item__text">
-                                        <h6>${cart.Name}</h6>
-                                        <h5>€${cart.Gia}</h5>
-                                        Size: ${cart.Kich}
+                                        <h6>${cart.name}</h6>
+                                        <h5>€${cart.gia}</h5>
+                                        Size: ${cart.kich}
                                          -
-                                        Color: ${cart.Mau}
+                                        Color: ${cart.mau}
                                         <br>
-                                         <h5 class="mess_${cart.Prime}" style="color:red">da het hang</h5>
+                                         <h5 class="mess_${cart.prime}" style="color:red">da het hang</h5>
                                     </div>
                                 </td>
                                 <td class="quantity__item">
                                     <div class="quantity">
                                         <div class="QUANTITY">
-                                                <input class="change-price" id="key_${cart.Prime}" data-id="${cart.Prime}" value="${cart.SoLuong}" type="number" min="1" max="10">
+                                                <input class="change-price" id="key_${cart.prime}" data-id="${cart.prime}" value="${cart.soLuong}" type="number" min="1" max="10">
                                         </div>
                                     </div>
                                 </td>
-                                <td class="cart__price" id="total-price-${cart.Prime}">$ ${cart.Tong}</td>
-                                <td class="cart__close" data-id="${cart.Prime}"><i class="fa fa-close"></i></td>
+                                <td class="cart__price" id="total-price-${cart.prime}">$ ${cart.tong}</td>
+                                <td class="cart__close" data-id="${cart.prime}"><i class="fa fa-close"></i></td>
                             </tr>
                     `
                                 }
                                 else {
-                                    tongtien = tongtien + cart.Tong;
+                                    tongtien = tongtien + cart.tong;
                                     rows += `
                         <tr>
                                 <td class="product__cart__item">
                                     <div class="product__cart__item__pic">
-                                        <img style="height: 110px;width: 90px; " src="/Content/img/${cart.Img}" alt="">
+                                        <img style="height: 110px;width: 90px; " src="/Content/img/${cart.img}" alt="">
                                     </div>
                                     <div class="product__cart__item__text">
-                                        <h6>${cart.Name}</h6>
-                                        <h5>€${cart.Gia}</h5>
-                                        Size: ${cart.Kich}
+                                        <h6>${cart.name}</h6>
+                                        <h5>€${cart.gia}</h5>
+                                        Size: ${cart.kich}
                                          -
-                                        Color: ${cart.Mau}
+                                        Color: ${cart.mau}
                                         <br>
-                                         <h5 class="mess_${cart.Prime}" style="color:red"></h5>
+                                         <h5 class="mess_${cart.prime}" style="color:red"></h5>
                                     </div>
                                 </td>
                                 <td class="quantity__item">
                                     <div class="quantity">
                                         <div class="QUANTITY">
-                                                <input class="change-price" data-id="${cart.Prime}" value="${cart.SoLuong}" type="number" min="1" max="10">
+                                                <input class="change-price" data-id="${cart.prime}" value="${cart.soLuong}" type="number" min="1" max="10">
                                         </div>
                                     </div>
                                 </td>
-                                <td class="cart__price" id="total-price-${cart.Prime}">$ ${cart.Tong}</td>
-                                <td class="cart__close" data-id="${cart.Prime}"><i class="fa fa-close"></i></td>
+                                <td class="cart__price" id="total-price-${cart.prime}">$ ${cart.tong}</td>
+                                <td class="cart__close" data-id="${cart.prime}"><i class="fa fa-close"></i></td>
                             </tr>
                     `
                                 }
@@ -634,7 +635,7 @@ class CartController {
                                 var Quanity = click.val();
                                 var Id = click.data('id');
                                 $.ajax({
-                                    url: "/Carts/changePrice",
+                                    url: "/Carts/ChangePrice",
                                     data: { id: Id, sl: Quanity },
                                     dataType: "json",
                                     type: "POST",
@@ -646,7 +647,7 @@ class CartController {
                                                     if (Id == Carts[i].Prime) {
                                                         Carts[i].SoLuong = Number(Quanity);
                                                         Carts[i].Tong = Carts[i].SoLuong * Carts[i].Gia
-                                                        $(`#total-price-${Id}`).html(Carts[i].Tong);
+                                                        $(`#total-price-${Id}`).html("$"+Carts[i].Tong);
                                                         localStorage.setItem('Carts', JSON.stringify(Carts));
                                                     }
                                                 }
@@ -732,30 +733,30 @@ class CartController {
                                                     for (var i = 0; i < carts.length; i++) {
 
                                                         var cart = carts[i];
-                                                        tongtien = tongtien + cart.Tong;
+                                                        tongtien = tongtien + cart.tong;
                                                         rows += `<tr>
                                 <td class="product__cart__item">
                                     <div class="product__cart__item__pic">
-                                        <img src="/Content/img/${cart.Img}" alt="">
+                                        <img src="/Content/img/${cart.img}" alt="">
                                     </div>
                                     <div class="product__cart__item__text">
-                                        <h6>${cart.Name}</h6>
-                                        <h5>€${cart.Gia}</h5>
-                                        Size: ${cart.Kich}
+                                        <h6>${cart.name}</h6>
+                                        <h5>€${cart.gia}</h5>
+                                        Size: ${cart.kich}
                                          <br>
-                                        Color: ${cart.Mau}
+                                        Color: ${cart.mau}
                                         <br>
                                     </div>
                                 </td>
                                 <td class="quantity__item">
                                     <div class="quantity">
                                         <div class="pro-qty-2">
-                                            <input class="change-price" data-id="${cart.Prime}" value="${cart.SoLuong}" type="number" min="1" max="10">
+                                            <input class="change-price" data-id="${cart.prime}" value="${cart.soLuong}" type="number" min="1" max="10">
                                         </div>
                                     </div>
                                 </td>
-                                <td class="cart__price" id="total-price-${cart.Prime}">$ ${cart.Tong}</td>
-                                <td class="cart__close" data-id="${cart.Prime}"><i class="fa fa-close"></i></td>
+                                <td class="cart__price" id="total-price-${cart.prime}">$ ${cart.tong}</td>
+                                <td class="cart__close" data-id="${cart.prime}"><i class="fa fa-close"></i></td>
                             </tr>
                                         `
                                                     }
