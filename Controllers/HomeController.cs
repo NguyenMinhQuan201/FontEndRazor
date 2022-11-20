@@ -1,4 +1,5 @@
-﻿using Data.Models;
+﻿using AdminWeb.Services;
+using Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RazorWeb.Models;
@@ -8,33 +9,27 @@ namespace RazorWeb.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly IHttpContextAccessor _contextAccessor;
-        private readonly IConfiguration _configuration;
-        private readonly Lipstick2Context _db;
-        public HomeController(Lipstick2Context db )
+        private readonly IAPISanPham _aPISanPham;
+        private readonly IAPITinTuc _aPITinTuc;
+        public HomeController(IAPISanPham aPISanPham, IAPITinTuc aPITinTuc)
         {
-            _db = db;
+            _aPISanPham = aPISanPham;
+            _aPITinTuc = aPITinTuc;
         }
         public async Task<ActionResult> Index()
         {
             return View();
         }
-        public async Task<ActionResult> ProductsHot(/*int? page*/)
+        public async Task<ActionResult> ProductsHot()
         {
-            /*if (page == null) page = 1;
-            int pageSize = 4;
-            int pageNumber = (page ?? 1);*/
-
-            /*var find = db.SanPhams.Where(x => x.Mota == M).FirstOrDefault();
-            var lst = db.SanPhams.Where(x => x.Mota == find.Mota).ToList();*/
-            var lst = await _db.SanPhams.ToListAsync();
-            return PartialView("ProductsHot",lst);
+            var lst = await _aPISanPham.GetSanPhamPagings();
+            return PartialView("ProductsHot",lst.data);
         }
         public async Task<ActionResult> News()
         {
-            var lst = await _db.TinTucs.OrderByDescending(x => x.CreatedDate).Take(3).ToListAsync();
-            return PartialView("News",lst);
+            /*var lst = await _db.TinTucs.OrderByDescending(x => x.CreatedDate).Take(3).ToListAsync();*/
+            var lst = await _aPITinTuc.GetPagings();
+            return PartialView("News",lst.data);
         }
         public ActionResult About()
         {

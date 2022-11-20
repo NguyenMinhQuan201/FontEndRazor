@@ -37,13 +37,13 @@ class CartController {
                     if (response.status == true) {
                         var rows = "<span>Color:</span>";
                         console.log("ok")
-                        console.log(response.arr)
+                        console.log(response)
                         for (var i = 0; i < response.arr.length; i++){
                             console.log(response.arr[i].id);
-                            console.log(response.arr[i].mauSacSp);
+                            console.log(response.arr[i].mauSacSP);
                             rows += `
-                                                <label for="${response.arr[i].mauSacSp}" class="colour" data-id="${response.arr[i].id}"">
-                                                    ${response.arr[i].mauSacSp}
+                                                <label for="${response.arr[i].mauSacSP}" class="colour" data-id="${response.arr[i].id}"">
+                                                    ${response.arr[i].mauSacSP}
                                                     <input name="mau" type="radio" id="${response.arr[i].id}">
                                                 </label>
                                         
@@ -563,6 +563,7 @@ class CartController {
                             console.log(response.list);
                             carts = response.list;
                             var rows = "";
+                            var rows2 = "";
                             var tongtien = 0;
                             for (var i = 0; i < carts.length; i++) {
                                 var cart = carts[i];
@@ -595,6 +596,20 @@ class CartController {
                                 <td class="cart__close" data-id="${cart.prime}"><i class="fa fa-close"></i></td>
                             </tr>
                     `
+                                    rows2 +=
+                                        `
+                                                                <div class="cart-sub">
+                                                                    <img class="image-cart-sub" src="/Content/img/${cart.img}" />
+                                                                        <div>
+                                                                            <span>${cart.name}</span>
+                                                                            <p>Số lượng : ${cart.soLuong}</p>
+                                                                            <button class="cart__close button-remove-cart-sub" data-id="${cart.prime}">
+                                                                                Xóa
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                               
+                                                            `
                                 }
                                 else {
                                     tongtien = tongtien + cart.tong;
@@ -625,11 +640,27 @@ class CartController {
                                 <td class="cart__close" data-id="${cart.prime}"><i class="fa fa-close"></i></td>
                             </tr>
                     `
+                                    rows2 +=
+                                        `
+                                                                <div class="cart-sub">
+                                                                    <img class="image-cart-sub" src="/Content/img/${cart.img}" />
+                                                                        <div>
+                                                                            <span>${cart.name}</span>
+                                                                            <p>Số lượng : ${cart.soLuong}</p>
+                                                                            <button class="cart__close button-remove-cart-sub" data-id="${cart.prime}">
+                                                                                Xóa
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                
+                                                            `
                                 }
                             }
                             localStorage.setItem('TT', tongtien);
                             $('.total-checkout').html(tongtien);
                             $('.js__cart-content').html(rows);
+                            console.log(rows2)
+                            $('.cart-sub-render').html(rows2);
                             $('.change-price').on('change', function () {
                                 var click = $(this);
                                 var Quanity = click.val();
@@ -706,6 +737,7 @@ class CartController {
                             $('.cart__close').off('click').on('click', function () {
                                 var tongtien = 0;
                                 var rows = "";
+                                var rows2 = "";
                                 var click = $(this);
                                 var Id = click.data('id');
                                 let Carts = localStorage.getItem('Carts') ? JSON.parse(localStorage.getItem('Carts')) : [];
@@ -759,8 +791,23 @@ class CartController {
                                 <td class="cart__close" data-id="${cart.prime}"><i class="fa fa-close"></i></td>
                             </tr>
                                         `
+                                                        rows2 += 
+                                                            `
+                                                                <div class="cart-sub">
+                                                                    <img class="image-cart-sub" src="~/Content/img/${cart.img}" />
+                                                                        <div>
+                                                                            <span>${cart.name}</span>
+                                                                            <p>Số lượng : ${cart.soLuong}</p>
+                                                                            <button class="cart__close button-remove-cart-sub" data-id="${cart.prime}">
+                                                                                Xóa
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                
+                                                            `
                                                     }
                                                     $('.js__cart-content').html(rows);
+                                                    $('.cart-sub-render').html(rows2);
                                                     localStorage.setItem('TT', tongtien);
                                                     $('.total-checkout').html(tongtien);
                                                 }

@@ -21,10 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Data\Data.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\Content\assets\demo\chart-area-demo.js" />
     <None Include="wwwroot\Content\assets\demo\chart-bar-demo.js" />
     <None Include="wwwroot\Content\assets\demo\chart-pie-demo.js" />
@@ -65,7 +61,6 @@
     <None Include="wwwroot\Content\css\Search.css" />
     <None Include="wwwroot\Content\css\slicknav.min.css" />
     <None Include="wwwroot\Content\css\Slide_show.css" />
-    <None Include="wwwroot\Content\css\style.css" />
     <None Include="wwwroot\Content\css\style.css.map" />
     <None Include="wwwroot\Content\css\style_loginform.css" />
     <None Include="wwwroot\Content\css\style_regisform.css" />
@@ -280,6 +275,10 @@
     <None Include="wwwroot\Scripts\jquery.validate.unobtrusive.js" />
     <None Include="wwwroot\Scripts\jquery.validate.unobtrusive.min.js" />
     <None Include="wwwroot\Scripts\modernizr-2.8.3.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Data\Data.csproj" />
   </ItemGroup>
 
 </Project>

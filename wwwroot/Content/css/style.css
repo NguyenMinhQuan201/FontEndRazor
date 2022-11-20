@@ -666,6 +666,32 @@ ol {
 /*---------------------
   MiniCarts
 -----------------------*/
+.image-cart-sub{
+    height:90px;  
+
+}
+.cart-sub{
+    display:flex;
+}
+.button-remove-cart-sub{
+    float:right;
+    border-radius:10%;
+    margin-bottom:40%;
+}
+.cart-sub > div >span{
+    margin:5px;
+}
+.cart-sub > div > p {
+    margin: 5px;
+    color:antiquewhite;
+}
+.cart-sub > div {
+    font-family: Serif;
+    color: antiquewhite;
+    display: block;
+    background-color: black;
+    width: 100%;
+}
 .mini_cart {
     position: absolute;
     height: auto;
@@ -692,7 +718,6 @@ ol {
     border-left: 15px solid transparent;
     border-right: 15px solid transparent;
     border-bottom: 10px solid black;
-    background-color: white;
     bottom: 100%;
     left: 45%
 }
@@ -702,6 +727,7 @@ ol {
     background-color: white;
     margin: 2%;
     border-radius: 5px;
+    padding: 5px;
 }
 
 .cart-sub-title {
@@ -717,7 +743,7 @@ ol {
         width: 20px;
         background-color: wheat;
         float: right;
-        border-bottom-left-radius: 10px;
+        border-bottom-left-radius: 5px;
     }
 
 .cart-sub-total {

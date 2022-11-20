@@ -1,4 +1,5 @@
-﻿using BraintreeHttp;
+﻿using AdminWeb.Services;
+using BraintreeHttp;
 using Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Nancy.Json;
@@ -11,23 +12,24 @@ namespace RazorWeb.Controllers
 {
     public class OrderController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IConfiguration _configuration;
-        private readonly Lipstick2Context _db;
-        public OrderController(Lipstick2Context db, IConfiguration configuration)
+        private readonly IAPIHoaDons _aPIHoaDons;
+        private readonly IAPIChiTietSanPham _aPIChiTietSanPham;
+        public OrderController(IConfiguration configuration, IAPIHoaDons aPIHoaDons, IAPIChiTietSanPham aPIChiTietSanPham)
         {
             _configuration = configuration;
-            _db =db;
+            _aPIHoaDons = aPIHoaDons;
+            _aPIChiTietSanPham = aPIChiTietSanPham;
         }
         public IActionResult Index()
         {
             return View();
         }
-        private void makeDetail(string cartUser, int orderID)
+        private async void makeDetail(string cartUser, int orderID)
         {
             var jsoncart = new JavaScriptSerializer().Deserialize<List<Order>>(cartUser);
-            var findOrder = _db.HoaDons.Where(x => x.IdhoaDon == orderID).FirstOrDefault();
+            var findOrder = /*_db.HoaDons.Where(x => x.IDHoaDon == orderID).FirstOrDefault();*/ await _aPIHoaDons.GetById(orderID);
 
             int i = 0;
             foreach (var item in jsoncart)
@@ -35,17 +37,17 @@ namespace RazorWeb.Controllers
                 i = i + 1;
                 var orderDetail = new ChiTietHoaDon()
                 {
-                    IdhoaDon = findOrder.IdhoaDon,
+                    IDHoaDon = findOrder.data.IDHoaDon,
                     Gia = item.Gia,
                     Images = item.Img,
                     MauSacSp = item.Mau,
                     KichCoSp = item.Kich,
                     Soluong = item.SoLuong,
                 };
-                _db.ChiTietHoaDons.Add(orderDetail);
+                /*_db.ChiTietHoaDons.Add(orderDetail);*/
                 try
                 {
-                    _db.SaveChanges();
+                    await _aPIHoaDons.CreateCTHD(orderDetail);
                 }
                 catch (Exception e)
                 {
@@ -53,7 +55,7 @@ namespace RazorWeb.Controllers
                 }
             }
         }
-        public JsonResult MakeOrder(string cartUser, string addRess, int phone)
+        public async Task<JsonResult> MakeOrder(string cartUser, string addRess, int phone)
         {
             try
             {
@@ -64,22 +66,19 @@ namespace RazorWeb.Controllers
                 foreach (var item in jsoncart)
                 {
                     tong = tong + (decimal)item.Tong;
-                    var findGiaNhapById = _db.ChiTietSanPhams.Find(item.Prime);
-                    tonggianhap = tonggianhap + (decimal)findGiaNhapById.GiaNhap * item.SoLuong;
+                    var findGiaNhapById = await _aPIChiTietSanPham.GetByIdChiTietSanPham(item.Prime);
+                    tonggianhap = tonggianhap + (decimal)findGiaNhapById.data.GiaNhap * item.SoLuong;
                 }
 
                 var order = new HoaDon()
                 {
                     TongGiaNhap = tonggianhap,
                     Gia = tong,
-                    Sdt = phone,
+                    SDT = phone,
                     DiaChi = addRess,
                     NgayGio = DateTime.UtcNow
                 };
-                _db.HoaDons.Add(order);
-                _db.SaveChanges();
-                
-
+                await _aPIHoaDons.Create(order);
                 return Json(new { status = true });
             }
             catch (Exception)
@@ -109,18 +108,18 @@ namespace RazorWeb.Controllers
             foreach (var item in jsoncart)
             {
                 itemList.Items.Add(new Item()
-            {
-                Name = item.Name,
-                Currency = "USD",
+                {
+                    Name = item.Name,
+                    Currency = "USD",
                     /*Price = Math.Round(item.DonGia / TyGiaUSD, 2).ToString(),*/
-                Price = Math.Round(item.Gia).ToString(),
-                Quantity = item.SoLuong.ToString(),
-                Sku = "sku",
-            });
-        }
-        #endregion
+                    Price = Math.Round(item.Gia).ToString(),
+                    Quantity = item.SoLuong.ToString(),
+                    Sku = "sku",
+                });
+            }
+            #endregion
 
-        var paypalOrderId = DateTime.Now.Ticks;
+            var paypalOrderId = DateTime.Now.Ticks;
             var hostname = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
             var payment = new Payment()
             {
@@ -179,7 +178,7 @@ namespace RazorWeb.Controllers
                     }
                 }
 
-                return Json ( new {link = paypalRedirectUrl,status=true});
+                return Json(new { link = paypalRedirectUrl, status = true });
             }
             catch (HttpException httpException)
             {
@@ -190,7 +189,7 @@ namespace RazorWeb.Controllers
                 return Redirect("/Paypal/CheckoutFail");
             }
         }
-        public JsonResult MakeOrderPaypal(string cartUser, string thongtin)
+        public async Task<JsonResult> MakeOrderPaypal(string cartUser, string thongtin)
         {
             try
             {
@@ -202,21 +201,22 @@ namespace RazorWeb.Controllers
                 foreach (var item in jsoncart)
                 {
                     tong = tong + (decimal)item.Tong;
-                    var findGiaNhapById = _db.ChiTietSanPhams.Find(item.Prime);
-                    tonggianhap = tonggianhap + (decimal)findGiaNhapById.GiaNhap * item.SoLuong;
+                    var findGiaNhapById = /*_db.ChiTietSanPhams.Find(item.Prime);*/ await _aPIChiTietSanPham.GetByIdChiTietSanPham(item.Prime);
+                    tonggianhap = tonggianhap + (decimal)findGiaNhapById.data.GiaNhap * item.SoLuong;
                 }
 
                 var order = new HoaDon()
                 {
                     TongGiaNhap = tonggianhap,
                     Gia = tong,
-                    Sdt = jsonOrder[0].phone,
+                    SDT = jsonOrder[0].phone,
                     DiaChi = jsonOrder[0].address,
                     NgayGio = DateTime.UtcNow
                 };
-                _db.HoaDons.Add(order);
-                _db.SaveChanges();
-                makeDetail(cartUser, order.IdhoaDon);
+                /*_db.HoaDons.Add(order);
+                _db.SaveChanges();*/
+                var rs = await _aPIHoaDons.Create(order);
+                makeDetail(cartUser, rs.ResultObj.IDHoaDon);
                 return Json(new { status = true });
             }
             catch (Exception)

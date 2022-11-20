@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RazorWeb", "RazorWeb.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "..\Data\Data.csproj", "{DF2576AB-90E5-4BE7-AAD2-2799C4B73202}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminWeb", "..\AdminWeb\AdminWeb.csproj", "{D071151E-E710-4F3A-A6A5-23AF574E45C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdminWeb", "..\AdminWeb\AdminWeb.csproj", "{D071151E-E710-4F3A-A6A5-23AF574E45C2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceForFE", "..\ServiceForFE\ServiceForFE.csproj", "{56EEA237-2F2C-488A-8F76-1CB2E9BF6133}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{D071151E-E710-4F3A-A6A5-23AF574E45C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D071151E-E710-4F3A-A6A5-23AF574E45C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D071151E-E710-4F3A-A6A5-23AF574E45C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56EEA237-2F2C-488A-8F76-1CB2E9BF6133}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56EEA237-2F2C-488A-8F76-1CB2E9BF6133}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56EEA237-2F2C-488A-8F76-1CB2E9BF6133}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56EEA237-2F2C-488A-8F76-1CB2E9BF6133}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,6 @@
-﻿using Data.Models;
+﻿using AdminWeb.Services;
+using Data.Common;
+using Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Nancy.Json;
 using RazorWeb.Models;
@@ -6,15 +8,19 @@ namespace RazorWeb.Controllers
 {
     public class CartsController : Controller
     {
-        private readonly Lipstick2Context _db;
         private readonly IEventsModels _eventsModels;
         private static int M;
-        public CartsController(Lipstick2Context db, IEventsModels eventsModels)
+        private readonly IAPIMauSac _iAPIMauSac;
+        private readonly IAPISKichCo _aPISKichCo;
+        private readonly IAPIChiTietSanPham _aPIChiTietSanPham;
+        public CartsController(IAPIMauSac iAPIMauSac, IEventsModels eventsModels, IAPISKichCo aPISKichCo, IAPIChiTietSanPham aPIChiTietSanPham)
         {
-            _db = db;
             _eventsModels = eventsModels;
+            _aPIChiTietSanPham = aPIChiTietSanPham;
+            _aPISKichCo = aPISKichCo;
+            _iAPIMauSac=iAPIMauSac;
         }
-        public JsonResult AddCart(string cartTemp)
+        public async Task<JsonResult> AddCart(string cartTemp)
         {
             var jsoncart = new JavaScriptSerializer().Deserialize<List<Cart>>(cartTemp);
 
@@ -22,20 +28,27 @@ namespace RazorWeb.Controllers
             {
                 int a = Convert.ToInt32(item.Colour);
                 int b = Convert.ToInt32(item.Size);
-                var fmau = _db.MauSacs.Where(x => x.Id == a).FirstOrDefault();
-                var fkich = _db.KichCos.Where(x => x.Id == b).FirstOrDefault();
-                var find = _db.ChiTietSanPhams.Where(x => x.IdsanPham == item.Id && x.KichCoSp == fkich.KichCoSp && x.MauSacSp == fmau.MauSacSp && x.SoLuong > 0).FirstOrDefault();
+                var fmau = await _iAPIMauSac.GetById(a);
+                var fkich = await _aPISKichCo.GetByIdLoaiKichCo(b);
+                var rq = new CombineConditionChiTietSanPham()
+                {
+                    IDSanPham = item.Id,
+                    KichCoSP = fkich.data.KichCoSP,
+                    MauSacSP = fmau.data.MauSacSP,
+                };
+                var find =/* _db.ChiTietSanPhams.Where(x => x.IdsanPham == item.Id && x.KichCoSp == fkich.KichCoSP && x.MauSacSp == fmau.MauSacSP && x.SoLuong > 0).FirstOrDefault();*/
+                    await _aPIChiTietSanPham.GetChiTietSanPhamByConditionID_MS_KC_SL(rq);
                 return Json(
                 new
                 {
                     status = true,
-                    Prime = find.Id,
-                    Img = find.Images,
-                    Gia = find.Gia,
-                    Ten = find.Ten,
-                    Mau = find.MauSacSp,
-                    Kich = find.KichCoSp,
-                    SoLuong = find.SoLuong,
+                    Prime = find.data.Id,
+                    Img = find.data.Images,
+                    Gia = find.data.Gia,
+                    Ten = find.data.Ten,
+                    Mau = find.data.MauSacSp,
+                    Kich = find.data.KichCoSp,
+                    SoLuong = find.data.SoLuong,
                 });
             }
 
@@ -45,14 +58,14 @@ namespace RazorWeb.Controllers
         {
             return View();
         }
-        public JsonResult RemakeRender(string cartTemp)
+        public async Task<JsonResult> RemakeRender(string cartTemp)
         {
             List<Cart> a = new List<Cart>();
             var jsoncart = new JavaScriptSerializer().Deserialize<List<Cart>>(cartTemp);
             foreach (var item in jsoncart)
             {
-                var find = _db.ChiTietSanPhams.Find(item.Prime);
-                if (find.SoLuong == 0)
+                var find =await _aPIChiTietSanPham.GetByIdChiTietSanPham(item.Prime);
+                if (find.data.SoLuong == 0)
                 {
                     item.TrangThai = false;
 
@@ -65,20 +78,20 @@ namespace RazorWeb.Controllers
             }
             return Json(new { status = true, list = a });
         }
-        public JsonResult ChangePrice(string id, string sl)
+        public async Task<JsonResult> ChangePrice(string id, string sl)
         {
             int ID = Convert.ToInt32(id);
             int SL = Convert.ToInt32(sl);
-            var find = _db.ChiTietSanPhams.Where(x => x.Id == ID).FirstOrDefault();
+            var find = await _aPIChiTietSanPham.GetByIdChiTietSanPham(ID);
             if (find != null)
             {
-                if (find.SoLuong < SL)
+                if (find.data.SoLuong < SL)
                 {
                     return Json(
                       new
                       {
                           status = false,
-                          max = find.SoLuong,
+                          max = find.data.SoLuong,
                       });
                 }
 
