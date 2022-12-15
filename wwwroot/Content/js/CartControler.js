@@ -21,7 +21,7 @@ class CartController {
             console.log("duoi");
             $(".product__details__option__size2 label").removeClass('active');
             $(this).addClass('active');
-            
+
             console.log("xong");
         });
         $('.size').on('click', function () {
@@ -30,7 +30,7 @@ class CartController {
             console.log(size);
             $.ajax({
                 url: "/Events/checkbysize",
-                data: {kich: size },
+                data: { kich: size },
                 dataType: "json",
                 type: "POST",
                 success: function (response) {
@@ -38,7 +38,7 @@ class CartController {
                         var rows = "<span>Color:</span>";
                         console.log("ok")
                         console.log(response)
-                        for (var i = 0; i < response.arr.length; i++){
+                        for (var i = 0; i < response.arr.length; i++) {
                             console.log(response.arr[i].id);
                             console.log(response.arr[i].mauSacSP);
                             rows += `
@@ -144,7 +144,7 @@ class CartController {
         $('.change-price').on('change', function () {
             console.log("ok")
             var click = $(this);
-            var Quanity= click.val();
+            var Quanity = click.val();
             var Id = click.data('id');
             $.ajax({
                 url: "/Carts/ChangePrice",
@@ -159,7 +159,7 @@ class CartController {
                                 if (Id == Carts[i].Prime) {
                                     Carts[i].SoLuong = Number(Quanity);
                                     Carts[i].Tong = Carts[i].SoLuong * Carts[i].Gia
-                                    $(`#total-price-${Id}`).html("$"+Carts[i].Tong);
+                                    $(`#total-price-${Id}`).html("$" + Carts[i].Tong);
                                     localStorage.setItem('Carts', JSON.stringify(Carts));
                                 }
                             }
@@ -208,7 +208,7 @@ class CartController {
                                 localStorage.setItem('Carts', JSON.stringify(Carts));
                                 $(`.mess_${Id}`).html(row);
                             }
-                            
+
                         }
                         $(`.mess_${Id}`).html(row);
                     }
@@ -216,7 +216,6 @@ class CartController {
             })
         });
         $('.button_add_to_cart_new').on('click', function () {
-            console.log("ok");
             let Carts = localStorage.getItem('Carts') ? JSON.parse(localStorage.getItem('Carts')) : [];
             var click = $(this);
             var Id = click.data('id');
@@ -261,7 +260,7 @@ class CartController {
                                         Mau: response.mau,
                                         Kich: response.kich,
                                         Tong: 0 + response.gia,
-                                        TrangThai:true,
+                                        TrangThai: true,
                                     });
                                 }
                             }
@@ -288,12 +287,40 @@ class CartController {
 
                         let TT = localStorage.getItem('TT')
                         $('.total-checkout').html(TT);
-                        window.location.href = "/Carts";
+                        /*window.location.href = "/Carts";*/
+                        var tongSoLuong = 0;
+                        var tongGia = 0;
+                        var rows2 = "";
+                        for (var i = 0; i < Carts.length; i++) {
+                            var cart = Carts[i];
+                            console.log(cart)
+                            tongSoLuong = tongSoLuong + cart.SoLuong;
+                            tongGia = tongGia + cart.Gia * cart.SoLuong;
+                            rows2 +=
+                                `
+                                                                <div class="cart-sub">
+                                                                    <img class="image-cart-sub" src="/Content/img/${cart.Img}" />
+                                                                        <div>
+                                                                            <span>${cart.Name}</span>
+                                                                            <p>Số lượng : ${cart.SoLuong}</p>
+                                                                            <button class="cart__close button-remove-cart-sub" data-id="${cart.prime}">
+                                                                                Xóa
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                `
+                        }
+                        $('.cart-sub-render').html(rows2);
+                        new CartController();
+                        $('.conut-number').html(tongSoLuong);
+                        $('.price').html(tongGia + "$");
+                        $("#mini_cart_id").slideDown();
+                        document.getElementById("get_blur").style.display = "block";
                     }
                 })
             }
-            
-            
+
+
         });
         $('#paypal').off('click').on('click', function () {
             var AddRess = $('#DC').val();
@@ -328,19 +355,19 @@ class CartController {
                 localStorage.setItem('Order', JSON.stringify(Order));
                 $.ajax({
                     url: "/Order/PaymentWithPaypal",
-                    data: { cartUser: JSON.stringify(Carts), addRess: AddRess, phone: Phone},
+                    data: { cartUser: JSON.stringify(Carts), addRess: AddRess, phone: Phone },
                     dataType: "json",
                     type: "POST",
                     success: function (response) {
-                        if (response.status == true ) {
+                        if (response.status == true) {
                             var link = response.link;
-                            
+
                             /*alert("XONG!");*/
                             /*window.location.href = "";*/
                             location.href = link
                             /*window.location.href = "/Carts";*/
                         }
-                        
+
                         else {
                             window.location.href = "/Carts";
                         }
@@ -481,7 +508,7 @@ class CartController {
             if (Carts.length == 0) {
                 $('.total-checkout').html("0");
             }
-            if (Carts.length>0) {
+            if (Carts.length > 0) {
                 new CartController()
             }
         });
@@ -504,7 +531,7 @@ class CartController {
                 console.log("okokok");
                 if (TT > 0) {
                     window.location.href = "/Order/Index";
-                    
+
                 }
                 else {
                     alert("Gio hang dang ko co gi ! ");
@@ -528,7 +555,7 @@ class CartController {
                 var rows = "";
                 for (var i = 0; i < carts.length; i++) {
                     var cart = carts[i];
-                    if (cart.TrangThai==true) {
+                    if (cart.TrangThai == true) {
                         rows += `
                         <li>${cart.SoLuong}   <span>$ ${cart.Gia}</span> <span style="margin-right: 18%">${cart.Name}</span></li>
                     `
@@ -550,7 +577,7 @@ class CartController {
                  *  
                  * }[]}
                 * */
-               
+
                 var carts = JSON.parse(cartsDataAsJson);
                 console.log(carts);
                 $.ajax({
@@ -568,7 +595,7 @@ class CartController {
                             for (var i = 0; i < carts.length; i++) {
                                 var cart = carts[i];
                                 if (cart.TrangThai == false) {
-                                    rows += 
+                                    rows +=
                                         `
                         <tr>
                                 <td class="product__cart__item">
@@ -678,7 +705,7 @@ class CartController {
                                                     if (Id == Carts[i].Prime) {
                                                         Carts[i].SoLuong = Number(Quanity);
                                                         Carts[i].Tong = Carts[i].SoLuong * Carts[i].Gia
-                                                        $(`#total-price-${Id}`).html("$"+Carts[i].Tong);
+                                                        $(`#total-price-${Id}`).html("$" + Carts[i].Tong);
                                                         localStorage.setItem('Carts', JSON.stringify(Carts));
                                                     }
                                                 }
@@ -791,7 +818,7 @@ class CartController {
                                 <td class="cart__close" data-id="${cart.prime}"><i class="fa fa-close"></i></td>
                             </tr>
                                         `
-                                                        rows2 += 
+                                                        rows2 +=
                                                             `
                                                                 <div class="cart-sub">
                                                                     <img class="image-cart-sub" src="~/Content/img/${cart.img}" />
@@ -827,7 +854,7 @@ class CartController {
                 })
             }
         }
-        
+
     }
 }
 new CartController();

@@ -40,8 +40,8 @@ namespace RazorWeb.Controllers
                     IDHoaDon = findOrder.data.IDHoaDon,
                     Gia = item.Gia,
                     Images = item.Img,
-                    MauSacSp = item.Mau,
-                    KichCoSp = item.Kich,
+                    MauSacSP = item.Mau,
+                    KichCoSP = item.Kich,
                     Soluong = item.SoLuong,
                 };
                 /*_db.ChiTietHoaDons.Add(orderDetail);*/
@@ -216,7 +216,7 @@ namespace RazorWeb.Controllers
                 /*_db.HoaDons.Add(order);
                 _db.SaveChanges();*/
                 var rs = await _aPIHoaDons.Create(order);
-                makeDetail(cartUser, rs.ResultObj.IDHoaDon);
+                makeDetail(cartUser, rs.data.IDHoaDon);
                 return Json(new { status = true });
             }
             catch (Exception)

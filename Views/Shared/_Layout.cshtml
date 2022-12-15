@@ -161,7 +161,7 @@
                             <img class="image-cart-sub" src="~/Content/img/hang1.jpg" />
                             <div>
                                 <span>Áo hồng - 3</span>
-                                <p>Số lượng :</p>
+                                <p>Số lượng : 1</p>
                                 <button class="cart__close button-remove-cart-sub">
                                     Xóa
                                 </button>
@@ -169,8 +169,8 @@
                         </div>
                     </div>
                 <div class="cart-sub-total">
-                    <button class="cart-sub-button"> Checkout </button>
-                    <button class="cart-sub-button"> Cart </button>
+                    @*<button class="cart-sub-button"> Checkout </button>*@
+                    <a class="cart-sub-button" href="@Url.Action("Index", "Carts")">Your Cart </a>
                 </div>
             </div>
             @RenderBody()

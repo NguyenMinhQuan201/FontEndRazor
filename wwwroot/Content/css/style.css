@@ -752,6 +752,7 @@ ol {
     width: 100%;
     background-color: black;
     text-align: center;
+    justify-content:center;
 }
 
     .cart-sub-total > button {
@@ -767,6 +768,16 @@ ol {
 .cart-sub-button:hover {
     background-color: palegreen;
     color:black;
+}
+.cart-sub-button{
+    padding:1%;
+    background-color:azure;
+    width:90%;
+    height:30%;
+    color:black;
+    display:block;
+    margin:5%;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 .sticky {
     position: fixed;
